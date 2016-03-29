@@ -1,15 +1,5 @@
-// Shows how to run three Steppers at once with varying speeds
-//
-// Requires the Adafruit_Motorshield v2 library
-//   https://github.com/adafruit/Adafruit_Motor_Shield_V2_Library
-// And AccelStepper with AFMotor support
-//   https://github.com/adafruit/AccelStepper
-
-// This tutorial is for Adafruit Motorshield v2 only!
-// Will not work with v1 shields
-
 #include <Wire.h>
-
+#include "MIDIUSB.h"
 #include <Adafruit_PWMServoDriver.h>
 
 // called this way, it uses the default address 0x40
@@ -18,7 +8,6 @@ Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();
 #define SERVOMIN  150 // this is the 'minimum' pulse length count (out of 4096)
 #define SERVOMAX  600 // this is the 'maximum' pulse length count (out of 4096)
 
-#include "MIDIUSB.h"
 
 int MIDICHANNEL = 0xB0; //MIDI Control Change 1 (0xB0)
 
