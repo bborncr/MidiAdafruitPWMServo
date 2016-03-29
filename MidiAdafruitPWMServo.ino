@@ -1,8 +1,8 @@
 // Shows how to run three Steppers at once with varying speeds
 //
-// Requires the Adafruit_Motorshield v2 library 
+// Requires the Adafruit_Motorshield v2 library
 //   https://github.com/adafruit/Adafruit_Motor_Shield_V2_Library
-// And AccelStepper with AFMotor support 
+// And AccelStepper with AFMotor support
 //   https://github.com/adafruit/AccelStepper
 
 // This tutorial is for Adafruit Motorshield v2 only!
@@ -23,28 +23,103 @@ Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();
 int MIDICHANNEL = 0xB0; //MIDI Control Change 1 (0xB0)
 
 void setup()
-{  
+{
   Serial.begin(115200);
   //while (!Serial) {
-   // ; // wait for serial port to connect. Needed for native USB
+  // ; // wait for serial port to connect. Needed for native USB
   //}
   Serial.println("Ready...");
 
   pwm.begin();
-  
+
   pwm.setPWMFreq(50);  // Analog servos run at ~50 Hz updates
+
+  // PWM LEDs
+  pinMode(3, OUTPUT);
+  pinMode(5, OUTPUT);
+  pinMode(6, OUTPUT);
+  pinMode(9, OUTPUT);
+  pinMode(10, OUTPUT);
+  pinMode(11, OUTPUT);
+  pinMode(13, OUTPUT);
+
+  // Digital pins
+  pinMode(2, OUTPUT);
+  pinMode(4, OUTPUT);
+  pinMode(8, OUTPUT);
+  pinMode(12, OUTPUT);
 
 }
 
-void loop(){
-midiEventPacket_t rx;
-    rx = MidiUSB.read();
-    if (rx.header != 0 && rx.byte1 == MIDICHANNEL) {
-      
-          Serial.println(rx.byte3);
-          int val = map(rx.byte3,0,127,SERVOMIN,SERVOMAX);
-          pwm.setPWM(rx.byte2, 0, val);
-        } 
+void loop() {
+  midiEventPacket_t rx;
+  rx = MidiUSB.read();
+  if (rx.header != 0 && rx.byte1 == MIDICHANNEL) {
+    if (rx.byte2 < 16) { //CC 0-15 are for the servos
+
+      Serial.println(rx.byte3);
+      int val = map(rx.byte3, 0, 127, SERVOMIN, SERVOMAX);
+      pwm.setPWM(rx.byte2, 0, val);
+    }
+    switch (rx.byte2) { // actions for CC 16-32 can be setup here
+      case 16:
+        {
+          int val = map(rx.byte3, 0, 127, 0, 255);
+          analogWrite(3, val);
+          break;
+        }
+      case 17:
+      {
+        int val = map(rx.byte3, 0, 127, 0, 255);
+        analogWrite(5, val);
+        break;
+      }
+      case 18:
+      {
+        int val = map(rx.byte3, 0, 127, 0, 255);
+        analogWrite(6, val);
+        break;
+      }
+      case 19:
+      {
+        int val = map(rx.byte3, 0, 127, 0, 255);
+        analogWrite(9, val);
+        break;
+      }
+      case 20:
+      {
+        int val = map(rx.byte3, 0, 127, 0, 255);
+        analogWrite(10, val);
+        break;
+      }
+      case 21:
+      {
+        int val = map(rx.byte3, 0, 127, 0, 255);
+        analogWrite(11, val);
+        break;
+      }
+      case 22:
+      {
+        int val = map(rx.byte3, 0, 127, 0, 255);
+        analogWrite(13, val);
+        break;
+        }
+      case 23:
+        digitalWrite(2, rx.byte3);
+        break;
+      case 24:
+        digitalWrite(4, rx.byte3);
+        break;
+      case 25:
+        digitalWrite(8, rx.byte3);
+        break;
+      case 26:
+        digitalWrite(12, rx.byte3);
+        break;
+      default:
+        break;
+    }
+  }
 }
 
 // First parameter is the event type (0x09 = note on, 0x08 = note off).
