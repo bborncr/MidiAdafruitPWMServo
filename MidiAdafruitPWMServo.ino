@@ -8,7 +8,6 @@ Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();
 #define SERVOMIN  150 // this is the 'minimum' pulse length count (out of 4096)
 #define SERVOMAX  600 // this is the 'maximum' pulse length count (out of 4096)
 
-
 int MIDICHANNEL = 0xB0; //MIDI Control Change 1 (0xB0)
 
 void setup()
@@ -30,13 +29,14 @@ void setup()
   pinMode(9, OUTPUT);
   pinMode(10, OUTPUT);
   pinMode(11, OUTPUT);
-  pinMode(13, OUTPUT);
+
 
   // Digital pins
   pinMode(2, OUTPUT);
   pinMode(4, OUTPUT);
   pinMode(8, OUTPUT);
   pinMode(12, OUTPUT);
+  pinMode(13, OUTPUT);
 
 }
 
@@ -58,40 +58,39 @@ void loop() {
           break;
         }
       case 17:
-      {
-        int val = map(rx.byte3, 0, 127, 0, 255);
-        analogWrite(5, val);
-        break;
-      }
+        {
+          int val = map(rx.byte3, 0, 127, 0, 255);
+          analogWrite(5, val);
+          break;
+        }
       case 18:
-      {
-        int val = map(rx.byte3, 0, 127, 0, 255);
-        analogWrite(6, val);
-        break;
-      }
+        {
+          int val = map(rx.byte3, 0, 127, 0, 255);
+          analogWrite(6, val);
+          break;
+        }
       case 19:
-      {
-        int val = map(rx.byte3, 0, 127, 0, 255);
-        analogWrite(9, val);
-        break;
-      }
+        {
+          int val = map(rx.byte3, 0, 127, 0, 255);
+          analogWrite(9, val);
+          break;
+        }
       case 20:
-      {
-        int val = map(rx.byte3, 0, 127, 0, 255);
-        analogWrite(10, val);
-        break;
-      }
+        {
+          int val = map(rx.byte3, 0, 127, 0, 255);
+          analogWrite(10, val);
+          break;
+        }
       case 21:
-      {
-        int val = map(rx.byte3, 0, 127, 0, 255);
-        analogWrite(11, val);
-        break;
-      }
+        {
+          int val = map(rx.byte3, 0, 127, 0, 255);
+          analogWrite(11, val);
+          break;
+        }
       case 22:
-      {
-        int val = map(rx.byte3, 0, 127, 0, 255);
-        analogWrite(13, val);
-        break;
+        {
+          digitalWrite(13, rx.byte3);
+          break;
         }
       case 23:
         digitalWrite(2, rx.byte3);
